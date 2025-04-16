@@ -28,6 +28,7 @@ platform :android do
     branch_name = ENV['GITHUB_REF_NAME']
     if branch_name == "master" ||  branch_name == "main"
       commit_info = sh("git log --merges -n 1 --pretty=format:'%s'", log: false).strip
+      p commit_info
       if commit_info =~ /Merge pull request #(\d+) from (.+)/
         pr_id = $1
         branch_name = $2
