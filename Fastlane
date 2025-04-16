@@ -1,0 +1,38 @@
+platform :android do
+  lane :release_to_store do
+
+    if ENV["GITHUB_EVENT_NAME"] == "pull_request"
+      event_data = JSON.parse(File.read(ENV["GITHUB_EVENT_PATH"]))
+      pr_id = event_data["number"]
+      UI.message("Running for PR ##{pr_id}")
+    end
+
+    branch_name = ENV['GITHUB_REF_NAME']
+    if branch_name == "master"
+      commit_info = sh("git log --merges -n 1 --pretty=format:'%s'", log: false).strip
+      if commit_info =~ /Merge pull request #(\d+) from (.+)/
+        pr_id = $1
+        branch_name = $2
+        UI.message("Merged PR ##{pr_id} from branch: #{branch_name}")
+    end
+    
+
+    UI.message("Started on branch #{branch_name}, PR #{pr_id}")
+
+    log = StringIO.new
+    $stdout = log
+    # This should fail of course
+    upload_to_play_store(
+      aab: "app/build/outputs/bundle/release/app-release.aab",
+      json_key: "fastlane/google-play.json",
+      track: "internal"
+    )
+
+    $stdout = STDOUT
+
+    p "Captured logs: #{log.string}"
+
+    UI.message("Using UI: #{log.string}")
+
+  end
+end
