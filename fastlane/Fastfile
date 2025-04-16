@@ -14,12 +14,15 @@ platform :android do
       $stderr.reopen original_stderr
     end
 
-    p ENV["GITHUB_EVENT_NAME"]
-    if ENV["GITHUB_EVENT_NAME"] == "pull_request"
-      event_data = JSON.parse(File.read(ENV["GITHUB_EVENT_PATH"]))
-      pr_id = event_data["number"]
-      p event_data
+  
+    event_data = JSON.parse(File.read(ENV["GITHUB_EVENT_PATH"]))
+    pr_id = event_data["number"]
+    p event_data
+
+    if pr_id
       UI.message("Running for PR ##{pr_id}")
+    else
+      UI.message("No PR detected")
     end
 
     branch_name = ENV['GITHUB_REF_NAME']
