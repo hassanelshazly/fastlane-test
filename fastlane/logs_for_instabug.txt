@@ -1,0 +1,3 @@
+[12:28:29]: [31mError setting value 'app/build/outputs/bundle/release/app-release.aab' for option 'aab'[0m
+[12:28:29]: [31mYou passed invalid parameters to 'upload_to_play_store'.[0m
+[12:28:29]: [31mCheck out the error below and available options by running `fastlane action upload_to_play_store`[0m
