@@ -26,7 +26,7 @@ jobs:
 
       - name: Decrypt Play Store credentials
         run: |
-          echo "${{ secrets.GOOGLE_PLAY_JSON }}" > fastlane_data/google-play.json
+          echo "${{ secrets.GOOGLE_PLAY_JSON }}" > fastlane/google-play.json
 
       - name: Run Fastlane
         run: bundle exec fastlane release_to_store
